@@ -1,0 +1,26 @@
+{
+  "file": "/mnt/user-data/uploads/JVMPvFVLL.mp3",
+  "duration_seconds": 144.75997916666665,
+  "sample_rate": 48000,
+  "tempo_bpm": 75.0,
+  "num_beats": 161,
+  "spectral_features": {
+    "mean_centroid_hz": 4065.673504785265,
+    "mean_rolloff_hz": 8837.058258731211,
+    "mean_bandwidth_hz": 4041.7360740370523,
+    "mean_zero_crossing_rate": 0.08196990903836944
+  },
+  "energy": {
+    "mean_rms": 0.13627584278583527,
+    "max_rms": 0.3479514718055725,
+    "min_rms": 2.246211988676805e-05,
+    "dynamic_range": 0.3479290008544922
+  },
+  "harmonic_characteristics": {
+    "consonance_score": 11.902735710144043,
+    "mean_pitch_hz": 703.285881816657
+  },
+  "output_files": {
+    "spectrogram": "intense_track_analysis/spectral/spectrogram.png"
+  }
+}
