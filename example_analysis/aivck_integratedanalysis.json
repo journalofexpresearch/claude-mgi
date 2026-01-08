@@ -1,0 +1,39 @@
+{
+  "audio_file": "/mnt/user-data/uploads/JVMPvFVLL.mp3",
+  "mathematical_listening_experience": {
+    "harmonic_quality": {
+      "consonance_score": 11.902735710144043,
+      "interpretation": "Dissonant - complex, tense harmonic relationships"
+    },
+    "emotional_journey": {
+      "arc_type": "Complex/Variable (mixed patterns)",
+      "intensity_progression": {
+        "beginning": 0.09327799826860428,
+        "middle": 0.154603973031044,
+        "end": 0.1609729677438736
+      },
+      "key_moments": {
+        "peaks": 38,
+        "valleys": 29,
+        "major_releases": 10
+      }
+    },
+    "vocal_character": {
+      "delivery_style": "Balanced, moderate delivery",
+      "emotional_tone": [
+        "High plosive density suggests aggressive or emphatic delivery",
+        "Low plosive rate indicates sustained, flowing vocal style",
+        "High intensity variation indicates expressive, dynamic performance"
+      ],
+      "phonetic_metrics": {
+        "plosive_rate": 1.2434375926012011,
+        "sibilance_level": 0.28299853205680847,
+        "phoneme_density": 0.9943044185638428
+      }
+    },
+    "overall_impression": [
+      "Harmonically complex with sophisticated tension patterns",
+      "Forceful, intense vocal delivery"
+    ]
+  }
+}
