@@ -29,7 +29,7 @@ Size: 824 KB (complete musical education)
 # Instructions
 This repo is prepared and adhears to guidelines set for in documentation.
 
-1-------- download the code as a zip file (however you do that or will learn to by accessing dox) 
+1-------- download the zip file (not the repo) musicgi-Skill.zip (however you do that or will learn to by accessing dox) 
 
 2-------- visit the official instructions at https://support.claude.com/en/articles/12512198-how-to-create-custom-skills#h_3909d72078
 
