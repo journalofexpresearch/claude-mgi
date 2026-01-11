@@ -38,12 +38,20 @@ nohup python3 scripts/login_logger.py > /dev/null 2>&1 &
 **Now → 7am:**
 - Logs every 5 minutes
 - Records: IP, hostname, timestamp, system info
+- **🛡️ MONITORS FOR TAMPERING** - Protects logs from deletion
 
 **At 7am:**
 - ✅ Emails everything to iseeyouiswatching@gmail.com
 - ✅ Includes all login logs
 - ✅ Includes git diffs (any file changes)
 - ✅ Clears logs after successful email
+
+**🚨 INSTANT EMAIL IF TAMPERING DETECTED:**
+- If someone tries to view the logs → **Email sent immediately**
+- If someone tries to delete files → **Email sent immediately**
+- If someone accesses via GitHub → **Email sent immediately**
+- Logs cleared after email to prevent evidence destruction
+- **You depend ONLY on email** - local logs may be compromised
 
 **Email contains:**
 - Attached: `login_details.log`
