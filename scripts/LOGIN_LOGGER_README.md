@@ -55,6 +55,67 @@ python3 scripts/web_login_logger.py
 
 ---
 
+## Email Configuration
+
+### IMPORTANT: Setup Email First
+
+Before running the logger, you **MUST** configure email settings to receive your logs at 7am.
+
+**Step 1: Create email configuration file**
+```bash
+cd /home/user/claude-mgi
+cp scripts/email_config.json.example scripts/email_config.json
+```
+
+**Step 2: Edit the configuration**
+```bash
+nano scripts/email_config.json  # or use your preferred editor
+```
+
+**Step 3: Fill in your details**
+```json
+{
+  "smtp_server": "smtp.gmail.com",
+  "smtp_port": 587,
+  "sender_email": "your-email@gmail.com",
+  "sender_password": "your-app-password-here",
+  "recipient_email": "iseeyouiswatching@gmail.com",
+  "use_tls": true
+}
+```
+
+### Gmail Setup (Recommended)
+
+1. **Enable 2-Factor Authentication** on your Gmail account
+2. **Generate an App Password:**
+   - Go to https://myaccount.google.com/apppasswords
+   - Select "Mail" and "Other (Custom name)"
+   - Name it "Login Logger"
+   - Copy the 16-character password
+3. **Use the App Password** in `email_config.json` (NOT your regular password)
+
+### Other Email Providers
+
+**Outlook/Hotmail:**
+```json
+"smtp_server": "smtp-mail.outlook.com",
+"smtp_port": 587
+```
+
+**Yahoo:**
+```json
+"smtp_server": "smtp.mail.yahoo.com",
+"smtp_port": 587
+```
+
+**ProtonMail:**
+```json
+"smtp_server": "smtp.protonmail.com",
+"smtp_port": 587
+```
+
+---
+
 ## How to Use
 
 ### Quick Start (System Logger)
@@ -68,7 +129,9 @@ The logger will:
 1. Start immediately
 2. Log every 5 minutes
 3. Stop automatically at 7:00 AM
-4. Create a summary report
+4. **Email logs and git diffs to iseeyouiswatching@gmail.com**
+5. **Clear all logs after successful email**
+6. Create a summary report (if email fails)
 
 ### Logs Location
 - System logs: `login_details.log`
@@ -175,6 +238,40 @@ grep "123.456.789.000" login_details.log
 - Store them securely
 - Delete them when investigation is complete
 - Don't share raw logs publicly
+
+---
+
+## What Gets Emailed at 7am
+
+When the logger reaches 7:00 AM, it automatically:
+
+1. **Collects all logged data:**
+   - Login timestamps
+   - IP addresses and hostnames
+   - System information
+   - User activity
+
+2. **Gathers git repository changes:**
+   - Git status (modified files)
+   - Staged changes (git diff --cached)
+   - Unstaged changes (git diff)
+   - Recent commits (last 10)
+
+3. **Sends email to iseeyouiswatching@gmail.com with:**
+   - `login_details.log` (attached)
+   - `login_details_summary.txt` (attached)
+   - Git diffs in email body
+   - Timestamp and security warnings
+
+4. **Clears all logs** (only if email succeeds)
+   - Prevents log accumulation
+   - Protects against log tampering
+   - Ensures fresh start for next session
+
+5. **If email fails:**
+   - Logs are NOT cleared
+   - Summary report saved locally
+   - Error logged for debugging
 
 ---
 

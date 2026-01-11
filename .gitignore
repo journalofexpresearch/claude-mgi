@@ -1,0 +1,29 @@
+# Log files - contain sensitive login information
+*.log
+*_summary.txt
+
+# Email configuration - contains credentials
+scripts/email_config.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
