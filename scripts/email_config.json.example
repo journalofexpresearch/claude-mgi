@@ -1,0 +1,23 @@
+{
+  "smtp_server": "smtp.gmail.com",
+  "smtp_port": 587,
+  "sender_email": "your-email@gmail.com",
+  "sender_password": "your-app-password-here",
+  "recipient_email": "iseeyouiswatching@gmail.com",
+  "use_tls": true,
+
+  "_comment": "IMPORTANT: For Gmail, use an App Password, not your regular password",
+  "_instructions": [
+    "1. Copy this file to email_config.json",
+    "2. Fill in your email credentials",
+    "3. For Gmail: Enable 2FA and create an App Password at https://myaccount.google.com/apppasswords",
+    "4. Never commit email_config.json to git (it's in .gitignore)"
+  ],
+
+  "_common_smtp_servers": {
+    "Gmail": {"server": "smtp.gmail.com", "port": 587},
+    "Outlook": {"server": "smtp-mail.outlook.com", "port": 587},
+    "Yahoo": {"server": "smtp.mail.yahoo.com", "port": 587},
+    "ProtonMail": {"server": "smtp.protonmail.com", "port": 587}
+  }
+}
