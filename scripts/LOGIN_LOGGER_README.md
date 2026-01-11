@@ -241,6 +241,48 @@ grep "123.456.789.000" login_details.log
 
 ---
 
+## Anti-Tampering Protection
+
+### Automatic File Access Detection
+
+The logger now includes **automatic file access protection** that monitors for unauthorized access:
+
+**What it monitors:**
+- `login_details.log` - The main log file
+- `email_config.json` - Email configuration
+- `login_logger.py` - The logger script itself
+- All related monitoring files
+
+**When triggered:**
+- Someone tries to view the log files (via `cat`, `less`, editor, etc.)
+- Someone tries to modify the monitoring scripts
+- Someone accesses files via GitHub web interface
+- Git operations on monitored files
+
+**What happens immediately:**
+1. 🚨 Security alert logged
+2. 📧 Email sent INSTANTLY to iseeyouiswatching@gmail.com
+3. 🗑️ Logs cleared after successful email
+4. 🔄 Monitoring continues
+
+**This means:**
+- If an intruder discovers the monitoring system, you'll know immediately
+- Evidence is secured via email before they can tamper with logs
+- They can't delete or modify the logs without you getting a copy first
+- You depend ONLY on email - local logs may be compromised
+
+### Why This Matters
+
+**Without file protection:**
+- Intruder finds logs → deletes them → no evidence
+
+**With file protection:**
+- Intruder touches logs → instant email → evidence preserved → logs cleared
+
+This ensures you **always** have the evidence, even if someone tries to cover their tracks.
+
+---
+
 ## What Gets Emailed at 7am
 
 When the logger reaches 7:00 AM, it automatically:

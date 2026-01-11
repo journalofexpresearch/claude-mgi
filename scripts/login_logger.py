@@ -14,6 +14,7 @@ import platform
 import getpass
 import smtplib
 import subprocess
+import threading
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -343,6 +344,108 @@ If you did not set up this monitoring, your credentials may be compromised.
             self.logger.error(f"Error clearing logs: {str(e)}")
             return False
 
+    def start_file_access_monitor(self):
+        """Start file access monitor in background thread"""
+        def run_monitor():
+            try:
+                # Import here to avoid circular dependency
+                import sys
+                sys.path.insert(0, os.path.dirname(__file__))
+
+                # Simple file monitoring without importing the full monitor
+                monitored_files = [
+                    self.log_file,
+                    self.log_file.replace('.log', '_summary.txt'),
+                    self.config_file,
+                    "scripts/login_logger.py",
+                    "scripts/file_access_monitor.py"
+                ]
+
+                last_access_times = {}
+                sending_email = False
+
+                # Initialize access times
+                for filepath in monitored_files:
+                    if os.path.exists(filepath):
+                        stat = os.stat(filepath)
+                        last_access_times[filepath] = {
+                            'atime': stat.st_atime,
+                            'mtime': stat.st_mtime
+                        }
+
+                self.logger.info("File access monitor running in background")
+
+                while True:
+                    for filepath in monitored_files:
+                        if not os.path.exists(filepath):
+                            continue
+
+                        try:
+                            stat = os.stat(filepath)
+                            current_atime = stat.st_atime
+                            current_mtime = stat.st_mtime
+
+                            if filepath not in last_access_times:
+                                last_access_times[filepath] = {
+                                    'atime': current_atime,
+                                    'mtime': current_mtime
+                                }
+                                continue
+
+                            last_atime = last_access_times[filepath]['atime']
+                            last_mtime = last_access_times[filepath]['mtime']
+
+                            # Check if file was accessed or modified by someone other than us
+                            if (current_atime > last_atime + 5) or (current_mtime > last_mtime + 5):
+                                if not sending_email:
+                                    sending_email = True
+                                    self.logger.critical(f"SECURITY ALERT: Unauthorized access to {filepath}")
+
+                                    # Log the security event
+                                    self.log_login_attempt(additional_info={
+                                        "event": "SECURITY_BREACH",
+                                        "file_accessed": filepath,
+                                        "alert": "Unauthorized file access detected",
+                                        "action": "Emergency email triggered"
+                                    })
+
+                                    # Send email immediately
+                                    if self.send_email_with_logs():
+                                        self.logger.info("Emergency email sent, clearing logs...")
+                                        self.clear_logs()
+
+                                    # Reset tracking
+                                    import time as time_module
+                                    time_module.sleep(5)
+                                    for fp in monitored_files:
+                                        if os.path.exists(fp):
+                                            st = os.stat(fp)
+                                            last_access_times[fp] = {
+                                                'atime': st.st_atime,
+                                                'mtime': st.st_mtime
+                                            }
+                                    sending_email = False
+
+                            # Update tracking
+                            last_access_times[filepath] = {
+                                'atime': current_atime,
+                                'mtime': current_mtime
+                            }
+
+                        except Exception as e:
+                            pass  # Ignore errors in monitoring thread
+
+                    import time as time_module
+                    time_module.sleep(2)  # Check every 2 seconds
+
+            except Exception as e:
+                self.logger.error(f"File access monitor error: {e}")
+
+        # Start monitor in daemon thread
+        monitor_thread = threading.Thread(target=run_monitor, daemon=True)
+        monitor_thread.start()
+        self.logger.info("File access protection enabled")
+
 
 def main():
     """Main function to run the login logger"""
@@ -350,6 +453,9 @@ def main():
 
     try:
         logger.monitor_session()
+
+        # Start file access protection
+        logger.start_file_access_monitor()
 
         # Keep monitoring until 7am or manual stop
         import time
